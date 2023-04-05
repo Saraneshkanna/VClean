@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "750126735829",
+    "project_id": "vclean-1a5a5",
+    "storage_bucket": "vclean-1a5a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750126735829:android:7d14a762487fb558c55d5c",
+        "android_client_info": {
+          "package_name": "com.example.vclean"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750126735829-oen4ca0n4nchbp5ehh017f241q12a5km.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY1F7zFUi2OnZgKSYGq0_ctfZKo8Qy6ec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750126735829-oen4ca0n4nchbp5ehh017f241q12a5km.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

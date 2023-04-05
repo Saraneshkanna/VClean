@@ -58,7 +58,7 @@ class _ScanQRState extends State<ScanQR> {
               child: TextField(
                 controller: _textController,
                 decoration: InputDecoration(
-                  hintText: 'Enter text or URL',
+                  hintText: 'Add Feedback',
                 ),
               ),
             ),
