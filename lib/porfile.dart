@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class profile extends StatefulWidget {
@@ -8,6 +10,33 @@ class profile extends StatefulWidget {
 }
 
 class _profileState extends State<profile> {
+  final CollectionReference usersCollection =
+  FirebaseFirestore.instance.collection('users');
+
+  late String name;
+  late String registrationNo;
+  late String roomNo;
+  late String email;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  Future<void> getCurrentUser() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final DocumentSnapshot userSnapshot =
+      await usersCollection.doc(user.uid).get();
+      setState(() {
+        name = userSnapshot.get('name');
+        registrationNo = userSnapshot.get('registrationNo');
+        roomNo = userSnapshot.get('roomNo');
+        email = user.email!;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +92,7 @@ class _profileState extends State<profile> {
                       ),
                       SizedBox(height: 30,),
                       Text(
-                        'REG NO: 20BCE2059',
+                        'Reg. No: 20BCE2059',
                         style: TextStyle(
                           color: Color(0xff4c505b),
                           fontWeight: FontWeight.bold,
@@ -74,7 +103,7 @@ class _profileState extends State<profile> {
                         height: 20,
                       ),
                       Text(
-                        'ROOM: F484',
+                        'Room: F484',
                         style: TextStyle(
                           color: Color(0xff4c505b),
                           fontWeight: FontWeight.bold,

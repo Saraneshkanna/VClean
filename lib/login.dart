@@ -14,7 +14,7 @@ class _MyloginState extends State<Mylogin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  bool _loading = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,25 +71,32 @@ class _MyloginState extends State<Mylogin> {
                     //   fontSize: 27, fontWeight: FontWeight.w700)
                     // ),
                     SizedBox(
-                      height: 15,
+                      height: 20,
                     ),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
+                    ElevatedButton(
                         onPressed: () async {
                           final email = _emailController.text;
                           final password = _passwordController.text;
+                          _loading = true;
                           try {
                             final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
                             Navigator.pushNamed(context, 'profile');
+                            _loading = false;
                           } catch (e) {
                             // Handle login errors
                           }
                         },
-                        icon: Icon(Icons.arrow_forward,color: Colors.white,),
+                        child: _loading
+                            ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                            : Text('Login'),
                       ),
-                    ),
                     SizedBox(
                       height: 10,
                     ),
