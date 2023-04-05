@@ -83,7 +83,7 @@ class _profileState extends State<profile> {
                   child: Column(
                     children:  [
                       Text(
-                        'Vinay Vikkranth',
+                        name,
                         style: TextStyle(
                           color: Color(0xff4c505b),
                           fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class _profileState extends State<profile> {
                       ),
                       SizedBox(height: 30,),
                       Text(
-                        'Reg. No: 20BCE2059',
+                        "Reg. No: " + registrationNo,
                         style: TextStyle(
                           color: Color(0xff4c505b),
                           fontWeight: FontWeight.bold,
@@ -103,7 +103,7 @@ class _profileState extends State<profile> {
                         height: 20,
                       ),
                       Text(
-                        'Room: F484',
+                        "Room: " + roomNo,
                         style: TextStyle(
                           color: Color(0xff4c505b),
                           fontWeight: FontWeight.bold,
