@@ -77,7 +77,7 @@ class _profileState extends State<profile> {
             SingleChildScrollView(
               child: Center(
                 child: Container(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.45,
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.35,
                       right: 35,
                       left: 35),
                   child: Column(
@@ -116,17 +116,17 @@ class _profileState extends State<profile> {
                       ),
 
                       TextButton(
-                          onPressed: () async {
-                            Navigator.pushNamed(context, 'homePage');
-                          },
                           child: Text(
-                            'Home',
+                            'Log Out',
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontSize: 18,
                                 color: Color(0xff4c505b)
                             ),
-                          )
+                          ),
+                          onPressed: () async {
+                            Navigator.pushNamed(context, 'homePage');
+                            },
                       )
                     ],
                   ),

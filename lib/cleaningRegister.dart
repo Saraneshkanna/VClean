@@ -11,20 +11,29 @@ class cleaningRegister extends StatefulWidget {
 
 class _cleaningRegisterState extends State<cleaningRegister> {
 
+  late List<String> _timeSlots;
   String? _selectedTimeSlot;
   String name = "";
   String roomNo = "";
-  final List<String> _timeSlots = [
-    '11AM - 12PM',
-    '12PM - 1PM',
-    '1PM - 2PM',
-    '2PM-3PM',
-    '3PM - 4PM',
-    '4PM - 5PM'
-  ];
+  CollectionReference slotsCollection =  FirebaseFirestore.instance.collection('TimeSlots');
 
+  @override
+  void initState() {
+    super.initState();
+    _getTimeSlots();
+  }
+
+  void _getTimeSlots() async {
+    final DocumentSnapshot document = await slotsCollection.doc('available').get();
+    final List<dynamic> slots = document.get('slots');
+    _timeSlots = List<String>.from(slots);
+    setState(() {});
+  }
   final CollectionReference usersCollection =
   FirebaseFirestore.instance.collection('users');
+
+  final CollectionReference roomsCollection =
+  FirebaseFirestore.instance.collection('cleanRequests');
 
   Future<void> updateFirestore() async {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -35,11 +44,25 @@ class _cleaningRegisterState extends State<cleaningRegister> {
         name = userSnapshot.get('name');
         roomNo = userSnapshot.get('roomNo');
       });
-
-      await FirebaseFirestore.instance.collection('cleanRequests').doc(roomNo).set({
-        'Name': name,
-        'Time Slot': _selectedTimeSlot,
-      });
+      final roomsDoc = await roomsCollection.doc(roomNo).get();
+      if(!roomsDoc.exists) {
+        await roomsCollection.doc(roomNo).set({
+          'Name': name,
+          'Time Slot': _selectedTimeSlot,
+        });
+      }
+      else
+        {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Your room has already been registered for cleaning',style: TextStyle(
+                fontSize: 20, // set font size to 24
+              ),),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 5),
+            ),
+          );
+        }
     }
   }
 
@@ -96,14 +119,14 @@ class _cleaningRegisterState extends State<cleaningRegister> {
             SizedBox(
               height: 20,
             ),
-            Text(
-              "Room: " + roomNo,
-              style: TextStyle(
-                color: Color(0xff4c505b),
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
-            ),
+            // Text(
+            //   "Room: " + roomNo,
+            //   style: TextStyle(
+            //     color: Color(0xff4c505b),
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 33,
+            //   ),
+            // ),
           ],
         ),
       ),

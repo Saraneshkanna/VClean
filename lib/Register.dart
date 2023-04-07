@@ -42,19 +42,56 @@ class _MyRegisterState extends State<MyRegister> {
     // });
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      bool hasError = false;
+      String errorText = "";
+      bool isValidEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+      bool isValidName = RegExp(r'^[a-zA-Z\s]+$').hasMatch(name);
+      bool isValidRegNo = RegExp(r'^\d{2}[A-Z]{3}\d{4}$').hasMatch(regNo);
+      bool isValidRoomNo = RegExp(r'^[A-Z]-\d{3,4}$').hasMatch(roomNo);
+      bool isValidPW = RegExp(r'^.{6,}$').hasMatch(password);
+
+      hasError = !(isValidRoomNo && isValidRegNo && isValidName && isValidEmail && isValidPW);
+      if(!isValidName){
+      errorText = "Please enter a proper name!";
+      }
+      else if(!isValidRegNo){
+      errorText = "Please enter a valid Registration Number!";
+      }
+      else if(!isValidRoomNo){
+        errorText = "Room number should be in format: {Block}-{Room Number}";
+      }
+      else if(!isValidEmail){
+        errorText = "Please enter a valid email address!";
+      }
+      else if(!isValidPW){
+        errorText = "Password must be atleast 6 characters!";
+      }
+
       // User is signed up, store additional user data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
-        'name': nameController.text,
-        'registrationNo': regNoController.text,
-        'roomNo': roomNoController.text,
-        'email': emailController.text,
-      });
-      // Navigate to next page
-      Navigator.pushNamed(context, 'profile');
+      if(hasError){
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorText,style: TextStyle(
+                fontSize: 20, // set font size to 24
+              ),),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 5),
+            ),
+        );
+        }
+      else{
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
+          'name': nameController.text,
+          'registrationNo': regNoController.text,
+          'roomNo': roomNoController.text,
+          'email': emailController.text,
+        });
+        Navigator.pushNamed(context, 'profile');
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -64,9 +101,6 @@ class _MyRegisterState extends State<MyRegister> {
     } catch (e) {
       print(e);
     }
-
-    // Move to the next screen
-    Navigator.pushNamed(context, 'profile');
   }
 
   @override

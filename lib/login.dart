@@ -26,6 +26,7 @@ class _MyloginState extends State<Mylogin> {
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
+            //Image(image: AssetImage('assets/Vclean.png')),
             Container(
               padding: const EdgeInsets.only(left: 35,top:80),
               child: const Text('Welcome\nBack', style: TextStyle(
@@ -78,24 +79,60 @@ class _MyloginState extends State<Mylogin> {
                           final email = _emailController.text;
                           final password = _passwordController.text;
                           _loading = true;
-                          try {
-                            final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-                            Navigator.pushNamed(context, 'profile');
-                            _loading = false;
-                          } catch (e) {
-                            // Handle login errors
+                          bool isValid = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+                          if(isValid) {
+                            try {
+                              final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                              Navigator.pushNamed(context, 'profile');
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Account not found. Please register first!',style: TextStyle(
+                                      fontSize: 20, // set font size to 24
+                                    ),),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 5),
+                                  ),
+                                );
+                              } else if (e.code == 'wrong-password') {
+                                // handle wrong password
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Incorrect password provided! ',style: TextStyle(
+                                      fontSize: 20, // set font size to 24
+                                    ),),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 5),
+                                  ),
+                                );
+                              } else {
+                                // handle other authentication errors
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('There was an error in authentication. Please try again later.',style: TextStyle(
+                                      fontSize: 20, // set font size to 24
+                                    ),),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 5),
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                          else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Enter a valid email address! ',style: TextStyle(
+                                  fontSize: 20, // set font size to 24
+                                ),),
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 5),
+                              ),
+                            );
                           }
                         },
-                        child: _loading
-                            ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                            : Text('Login'),
+                      child: Text('Login'),
                       ),
                     SizedBox(
                       height: 10,
