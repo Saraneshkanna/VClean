@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class cleaningRegister extends StatefulWidget {
@@ -9,143 +11,100 @@ class cleaningRegister extends StatefulWidget {
 
 class _cleaningRegisterState extends State<cleaningRegister> {
 
-  String? valueChoose;
-  List<String> listItem =['11AM - 12PM','12PM - 1PM','1PM - 2PM','2PM-3PM','3PM - 4PM'];
+  String? _selectedTimeSlot;
+  String name = "";
+  String roomNo = "";
+  final List<String> _timeSlots = [
+    '11AM - 12PM',
+    '12PM - 1PM',
+    '1PM - 2PM',
+    '2PM-3PM',
+    '3PM - 4PM',
+    '4PM - 5PM'
+  ];
+
+  final CollectionReference usersCollection =
+  FirebaseFirestore.instance.collection('users');
+
+  Future<void> updateFirestore() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final DocumentSnapshot userSnapshot =
+      await usersCollection.doc(user.uid).get();
+      setState(() {
+        name = userSnapshot.get('name');
+        roomNo = userSnapshot.get('roomNo');
+      });
+
+      await FirebaseFirestore.instance.collection('cleanRequests').doc(roomNo).set({
+        'Name': name,
+        'Time Slot': _selectedTimeSlot,
+      });
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/register.png'),fit: BoxFit.cover)),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
-        backgroundColor: Colors.transparent,
-        body: Stack(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Choose Time Slot'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.only(left: 70,top:10),
-              child: const Text('Choose Time Slot', style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 33),
-              ),
+            DropdownButton<String>(
+              value: _selectedTimeSlot,
+              hint: const Text('Select a time slot'),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedTimeSlot = newValue;
+                });
+              },
+              items: _timeSlots.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(110, 150, 100, 100),
-              child: Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                updateFirestore();
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  'Register',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
                   ),
-                  onPressed: () async {
-                    Navigator.pushNamed(context, 'ScanQR');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 4, 5, 4),
-                    child: Text(
-                      'Register',
-                      style: TextStyle(
-                        fontSize: 35,
-                        color: Color(0xff4c505b),
-                      ),
-                    ),
+                ),
+              ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
                   ),
                 ),
               ),
             ),
-            SingleChildScrollView(
-              child: Container(
-                child: Row(
-                  children: [
-                    SizedBox(height:1100 ,),
-                    SizedBox(width: 65,),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
-                        onPressed: () async {
-                          Navigator.pushNamed(context, 'homePage');
-                        },
-                        icon: Icon(Icons.home,color: Colors.white,),
-                      ),
-                    ),
-                    SizedBox(width: 50,),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
-                        onPressed: () async {
-                          Navigator.pushNamed(context, 'profile');
-                        },
-                        icon: Icon(Icons.person,color: Colors.white,),
-                      ),
-                    ),
-                    SizedBox(width: 50,),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
-                        onPressed: () async {
-                          Navigator.pushNamed(context, 'ScanQR');
-                        },
-                        icon: Icon(Icons.qr_code,color: Colors.white,),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                  ],
-                ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Room: " + roomNo,
+              style: TextStyle(
+                color: Color(0xff4c505b),
+                fontWeight: FontWeight.bold,
+                fontSize: 33,
               ),
             ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.25,
-                        right: 35,
-                        left: 35),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Container(
-                        padding: EdgeInsets.only(left:16, right:16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.circular(15)
-                        ),
-                        child: DropdownButton(
-                          hint: Text("Select Time Slot",style: TextStyle(color: Colors.black),),
-                          dropdownColor: Colors.white,
-                          icon: Icon(Icons.arrow_drop_down),
-                          iconSize: 40,
-                          isExpanded: true,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22
-                          ),
-                          value: valueChoose,
-                          onChanged: (newValue){
-                            setState(() {
-                              valueChoose = newValue as String?;
-                            });
-                          },
-                          items: listItem.map((valueItem){
-                            return DropdownMenuItem(
-                              value: valueItem,
-                                child: Text(valueItem),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                 ),
-                ],
-              )
-            )],
-
+          ],
         ),
       ),
     );

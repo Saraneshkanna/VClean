@@ -35,7 +35,7 @@ class _ScanQRState extends State<ScanQR> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Generator'),
+        title: Text('QR Verification'),
         backgroundColor: Color(0xff4c505b),
       ),
       body: Center(
