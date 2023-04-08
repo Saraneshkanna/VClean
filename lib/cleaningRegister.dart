@@ -50,6 +50,17 @@ class _cleaningRegisterState extends State<cleaningRegister> {
           'Name': name,
           'Time Slot': _selectedTimeSlot,
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Room registered for cleaning!',style: TextStyle(
+              fontSize: 20, // set font size to 24
+              color: Colors.black,
+            ),),
+            backgroundColor: Colors.lightGreenAccent,
+            duration: Duration(seconds: 5),
+          ),
+        );
+        _selectedTimeSlot = null;
       }
       else
         {
