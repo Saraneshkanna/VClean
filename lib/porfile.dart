@@ -115,65 +115,92 @@ class _profileState extends State<profile> {
                         height: 15,
                       ),
 
-                      TextButton(
-                          child: Text(
-                            'Log Out',
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontSize: 18,
-                                color: Color(0xff4c505b)
-                            ),
-                          ),
-                          onPressed: () async {
-                            Navigator.pushNamed(context, 'homePage');
-                            },
-                      )
+
                     ],
                   ),
                 ),
               ),
             ),
-            SingleChildScrollView(
-              child: Container(
-                child: Row(
-                  children: [
-                    SizedBox(height:1290 ,),
-                    SizedBox(width: 65,),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
-                        onPressed: () async {
-                          Navigator.pushNamed(context, 'cleaningRegister');
-                        },
-                        icon: Icon(Icons.cleaning_services,color: Colors.white,),
+            // Positioned(
+            //   top: 10,
+            //   right: 0,
+            //   child: SingleChildScrollView(
+            //     child: Container(
+            //       child: Row(
+            //         children: [
+            //           ElevatedButton(
+            //             onPressed: () async {
+            //               Navigator.pushNamed(context, 'homePage');
+            //             },
+            //             child: const Padding(
+            //               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //               child: Text(
+            //                 'Log Out',
+            //                 style: TextStyle(
+            //                   fontSize: 18,
+            //                   color: Colors.black,
+            //                 ),
+            //               ),
+            //             ),
+            //             style: ButtonStyle(
+            //               backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            //               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //                 RoundedRectangleBorder(
+            //                   borderRadius: BorderRadius.circular(18.0),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: SingleChildScrollView(
+                child: Container(
+                  child: Row(
+                    children: [
+                      SizedBox(height:1290 ,),
+                      SizedBox(width: 65,),
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Color(0xff4c505b),
+                        child: IconButton(
+                          onPressed: () async {
+                            Navigator.pushNamed(context, 'cleaningRegister');
+                          },
+                          icon: Icon(Icons.cleaning_services,color: Colors.white,),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 50,),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
-                        onPressed: () async {
-                          Navigator.pushNamed(context, 'homePage');
-                        },
-                        icon: Icon(Icons.home,color: Colors.white,),
+                      SizedBox(width: 50,),
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Color(0xff4c505b),
+                        child: IconButton(
+                          onPressed: () async {
+                            Navigator.pushNamed(context, 'homePage');
+                          },
+                          icon: Icon(Icons.logout,color: Colors.white,),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 50,),
+                      SizedBox(width: 50,),
 
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
-                        onPressed: () async {
-                          Navigator.pushNamed(context, 'ScanQR');
-                        },
-                        icon: Icon(Icons.qr_code,color: Colors.white,),
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Color(0xff4c505b),
+                        child: IconButton(
+                          onPressed: () async {
+                            Navigator.pushNamed(context, 'ScanQR');
+                          },
+                          icon: Icon(Icons.qr_code,color: Colors.white,),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10,),
-                  ],
+                      SizedBox(width: 10,),
+                    ],
+                  ),
                 ),
               ),
             ),

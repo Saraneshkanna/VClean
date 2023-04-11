@@ -78,6 +78,15 @@ class _ScanQRState extends State<ScanQR> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Image.asset(
+                  'assets/vcleanlogo3(black).png',
+                  width: 100,
+                  height: 100,
+                ),
+              ),
               SizedBox(
                 width: 200,
                 height: 200,
@@ -134,7 +143,7 @@ class _ScanQRState extends State<ScanQR> {
                           onPressed: () async {
                             Navigator.pushNamed(context, 'homePage');
                           },
-                          icon: Icon(Icons.home, color: Colors.white,),
+                          icon: Icon(Icons.logout, color: Colors.white,),
                         ),
                       ),
                       SizedBox(width: 50,),

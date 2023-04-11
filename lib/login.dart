@@ -75,6 +75,10 @@ class _MyloginState extends State<Mylogin> {
                       height: 20,
                     ),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(
+                            0xff4c505b), // Set the background color of the button
+                      ),
                         onPressed: () async {
                           final email = _emailController.text;
                           final password = _passwordController.text;

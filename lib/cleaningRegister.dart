@@ -83,64 +83,173 @@ class _cleaningRegisterState extends State<cleaningRegister> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Choose Time Slot'),
+        backgroundColor: Color(0xff4c505b),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButton<String>(
-              value: _selectedTimeSlot,
-              hint: const Text('Select a time slot'),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedTimeSlot = newValue;
-                });
-              },
-              items: _timeSlots.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+      body: Stack(
+        children:[
+          Positioned(
+            top: 0,
+            right: 100,
+            child: Image.asset(
+              'assets/vcleanlogo3(black).png',
+              width: 200,
+              height: 200,
             ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                updateFirestore();
-              },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  'Register',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
+          ),
+          Positioned(
+            bottom: 20,
+            child: SingleChildScrollView(
+              child: Container(
+                child: Row(
+                  children: [
+                    SizedBox(height: 10,),
+                    SizedBox(width: 65,),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Color(0xff4c505b),
+                      child: IconButton(
+                        onPressed: () async {
+                          Navigator.pushNamed(context, 'cleaningRegister');
+                        },
+                        icon: Icon(Icons.cleaning_services,
+                          color: Colors.white,),
+                      ),
+                    ),
+                    SizedBox(width: 50,),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Color(0xff4c505b),
+                      child: IconButton(
+                        onPressed: () async {
+                          Navigator.pushNamed(context, 'homePage');
+                        },
+                        icon: Icon(Icons.logout, color: Colors.white,),
+                      ),
+                    ),
+                    SizedBox(width: 50,),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Color(0xff4c505b),
+                      child: IconButton(
+                        onPressed: () async {
+                          Navigator.pushNamed(context, 'profile');
+                        },
+                        icon: Icon(Icons.person, color: Colors.white,),
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Center(
+          child: Column(
+
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              DropdownButton<String>(
+                value: _selectedTimeSlot,
+                hint: const Text('Select a time slot'),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedTimeSlot = newValue;
+                  });
+                },
+                items: _timeSlots.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  updateFirestore();
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Text(
+                    'Register',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
                   ),
                 ),
               ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                ),
+              SizedBox(
+                height: 20,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            // Text(
-            //   "Room: " + roomNo,
-            //   style: TextStyle(
-            //     color: Color(0xff4c505b),
-            //     fontWeight: FontWeight.bold,
-            //     fontSize: 33,
-            //   ),
-            // ),
-          ],
+              // Positioned(
+              //   bottom: 0,
+              //   child: SingleChildScrollView(
+              //     child: Container(
+              //       child: Row(
+              //         children: [
+              //           SizedBox(height: 10,),
+              //           SizedBox(width: 65,),
+              //           CircleAvatar(
+              //             radius: 30,
+              //             backgroundColor: Color(0xff4c505b),
+              //             child: IconButton(
+              //               onPressed: () async {
+              //                 Navigator.pushNamed(context, 'cleaningRegister');
+              //               },
+              //               icon: Icon(Icons.cleaning_services,
+              //                 color: Colors.white,),
+              //             ),
+              //           ),
+              //           SizedBox(width: 50,),
+              //           CircleAvatar(
+              //             radius: 30,
+              //             backgroundColor: Color(0xff4c505b),
+              //             child: IconButton(
+              //               onPressed: () async {
+              //                 Navigator.pushNamed(context, 'homePage');
+              //               },
+              //               icon: Icon(Icons.logout, color: Colors.white,),
+              //             ),
+              //           ),
+              //           SizedBox(width: 50,),
+              //           CircleAvatar(
+              //             radius: 30,
+              //             backgroundColor: Color(0xff4c505b),
+              //             child: IconButton(
+              //               onPressed: () async {
+              //                 Navigator.pushNamed(context, 'profile');
+              //               },
+              //               icon: Icon(Icons.person, color: Colors.white,),
+              //             ),
+              //           ),
+              //
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Text(
+              //   "Room: " + roomNo,
+              //   style: TextStyle(
+              //     color: Color(0xff4c505b),
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: 33,
+              //   ),
+              // ),
+            ],
+          ),
         ),
-      ),
+      ]),
     );
   }
 }

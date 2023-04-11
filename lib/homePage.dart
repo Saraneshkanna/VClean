@@ -19,13 +19,15 @@ class _homePageState extends State<homePage> {
         body: Stack(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 150,top:80),
-              child: const Text('VClean', style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 33),
+              padding: const EdgeInsets.only(left: 130, top: 40),
+              child: Image.asset(
+                'assets/vcleanlogo3(white).png',
+                width: 150, // adjust the width and height according to your image size
+                height: 150,
               ),
             ),
-            Center(
+
+        Center(
               child: SingleChildScrollView(
                 child: Center(
                   child: Column(
